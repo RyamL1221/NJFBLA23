@@ -1,0 +1,63 @@
+@import 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css';
+@import 'https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css';
+
+a {
+    color: #c29393;
+    cursor:pointer;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0 0 10px;
+    font-weight: 600;
+}
+
+body{
+    height:100vh;
+    background-color: #8d8d8d;
+    overflow:auto;
+}
+footer{
+    background-color: #ffffff;
+    padding: 0px;
+    margin-bottom:0px;
+}
+
+
+.social-links li a {
+    -webkit-border-radius: 50%;
+    background-color: rgba(89,206,181,.85);
+    border-radius: 50%;
+    color: #fff;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    width: 30px;
+    font-size: 12px;
+}
+
+
+.card {
+    border: none;
+    -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);  
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+    margin-bottom: 30px;
+}
+.w-60 {
+    width: 60px;
+}
+
+.example-additional-selection {
+    opacity: 0.75;
+    font-size: 0.75em;
+  }
+
+#deleteStudentButton {
+    color:red;
+    background-color: rgb(180, 168, 168);
+    border-color: rgb(180, 168, 168)
+}
+
+
+
+

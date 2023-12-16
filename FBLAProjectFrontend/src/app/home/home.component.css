@@ -1,0 +1,12 @@
+.selectRouter {
+    height:100%;
+    width:45%;
+    background-color: gray;
+    display:inline;
+}
+
+.selectButton {
+    height:100%;
+    width:50%;
+    font-size:50px;
+}

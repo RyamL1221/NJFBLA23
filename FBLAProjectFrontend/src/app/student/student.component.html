@@ -1,0 +1,231 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="" style="color:white;">Home</a>
+    <a class="navbar-brand" style="color:white;">Student Roster</a>
+    <a class="navbar-brand" (click)="pickRandomWinner()" style="color:white;">Pick Random Winner</a>
+    <a class="navbar-brand" (click)="pickTopWinner()" style="color:white;">Pick Top Point Winner</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor02">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" (click)="onOpenAddModal()">Add Student<span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input type="search" (ngModelChange)="searchStudents(key.value)" #key="ngModel" ngModel name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search for Students">
+        </form>
+    </div>
+</nav>
+
+
+<body height="100vh">
+    <div class="container" id="main-container">
+        <div class="row">
+            <div *ngFor="let student of students" class="col-md-6 col-xl-3">
+                <div class="card m-b-30">
+                    <div class="card-body row">
+                        <div class="col-6">
+                            <img src="https://media.istockphoto.com/id/1164822188/vector/male-avatar-profile-picture.jpg?s=612x612&w=0&k=20&c=KPsLgVIwEGdDvf4_kiynCXw96p_PhBjIGdU68qkpbuI=" alt="person image" class="img-fluid rounded-circle w-60">
+                        </div>
+                        <div class="col-6 card-title align-self-center mb-0">
+                            <h5>{{student?.name}}</h5>
+                            <p class="m-0">Student</p>
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Grade Level: {{student?.gradeLevel}} </li>
+                        <li class="list-group-item">Points: {{student?.points}}</li>
+                    </ul>
+                    <div class="card-body">
+                        <div class="float-left btn-group btn-group-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Add Event
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a *ngFor="let event of allEvents"(click)="onSelectDropdown(student, event)" class="dropdown-item">{{event}}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="float-right btn-group btn-group-sm">
+                            <a (click)="onOpenEditModal(student)" class="btn btn-primary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+                            <a id="deleteStudentButton" (click)="onOpenDeleteModal(student)" class="btn btn-secondary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Delete"><i id="deleteStudentButtonOuter" class="fa fa-times"></i></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<!-- Add Student Modal -->
+<div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="addStudentModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addStudentModal">Add Student</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form #addForm="ngForm" (ngSubmit)="onAddStudent(addForm)">
+                <div class="modal-body">     
+                    <div>
+                        <label for="name">Name</label>
+                        <input type="text" ngModel name="name" class="form-control" id="name" placeholder="Name" required>
+                    </div>
+                    <br>
+                    <div>
+                        <label for="gradeLevel">Grade Level</label>
+                        <input type="text" ngModel name="gradeLevel" class="form-control" id="gradeLevel" placeholder="Grade Level" required>
+                    </div>
+                    <br>
+                    <div>
+                        <label for="points">Points</label>
+                        <input type="text" ngModel name="points" class="form-control" id="points" placeholder="Points" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="add-student-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Student Modal -->
+<div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog" aria-labelledby="editStudentModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editStudentModal">Edit Student {{editStudent.name}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form #editForm="ngForm">
+                <input type="hidden" ngModel="{{editStudent.id}}" name="id" class="form-control" id="id" placeholder="id">
+                <input type="hidden" ngModel="{{editStudent.code}}" name="code" class="form-control" id="code" placeholder="code">
+                <div class="modal-body">     
+                    <div>
+                        <label for="name">Name</label>
+                        <input type="text" ngModel="{{editStudent.name}}" name="name" class="form-control" id="name" placeholder="Name" required>
+                    </div>
+                    <br>
+                    <div>
+                        <label for="gradeLevel">Grade Level</label>
+                        <input type="text" ngModel="{{editStudent.gradeLevel}}"  name="gradeLevel" class="form-control" id="gradeLevel" placeholder="Grade Level" required>
+                    </div>
+                    <br>
+                    <div>
+                        <label for="points">Points</label>
+                        <input type="text" ngModel="{{editStudent.points}}"  name="points" class="form-control" id="points" placeholder="Points" required>
+                    </div>
+                    <div>
+                        <label for="eventsAttended">Events Attended</label>
+                        <input type="text" ngModel="{{editStudent.eventsAttended}}"  name="eventsAttended" class="form-control" id="eventsAttended" placeholder="Events Attended" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="edit-student-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button (click)="onUpdateStudent(editForm.value)" [disabled]="editForm.invalid" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Student Modal -->
+<div class="modal fade" id="deleteStudentModal" tabindex="-1" role="dialog" aria-labelledby="deleteStudentModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Student</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the student {{deleteStudent.name}}?</p>                   
+                <div class="modal-footer">
+                    <button type="button" id="delete-student-form" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button (click)="onDeleteStudent(deleteStudent.id)" type="button" class="btn btn-danger">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirm Event Modal-->
+
+<div class="modal fade" id="confirmEventModal" tabindex="-1" role="dialog" aria-labelledby="confirmEventModal" aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="confirmEventModal">Confirm Event Participation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        Confirm {{eventStudent.name}} partcipated in {{eventSelect}}.
+    </div>
+    <div class="modal-footer">
+        <button type="button" id="event-student-form" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button (click)="onConfirmEventAdd()" type="button" class="btn btn-primary">Yes</button>
+    </div>
+    </div>
+</div>
+</div>
+
+<!-- Random Winner Modal -->
+<div class="modal fade" id="randomWinnerModal" tabindex="-1" role="dialog" aria-labelledby="randomWinnerModal" aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="randomWinnerModal">Random Winners!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div *ngFor="let randomWinner of randomWinnerStudents" class="modal-body">
+        {{randomWinner.name}} from grade {{randomWinner.gradeLevel}} have won a free school lunch!
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+    </div>
+</div>
+</div>
+
+<!-- Top Winner Modal -->
+
+<div class="modal fade" id="topWinnerModal" tabindex="-1" role="dialog" aria-labelledby="topWinnerModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="topWinnerModal">Top Students From Each Grade</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div *ngFor="let top of topWinnerStudents" class="modal-body">
+          {{top.name}} from grade {{top.gradeLevel}} has the most points: {{top.points}}. They have won a {{selectPrize(top.points)}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- Notification for no students-->
+<div *ngIf="students.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+    <div class="alert alert-info" role="alert">
+        <h4 class="alrt-heading">No students found</h4>
+    </div>
+</div>

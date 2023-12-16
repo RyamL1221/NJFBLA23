@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="" style="color:white;">Home</a>
+    <a class="navbar-brand" style="color:white;">Student Report</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</nav>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Student ID Number</th>
+        <th scope="col">Name</th>
+        <th scope="col">Grade</th>
+        <th scope="col">Points</th>
+        <th scope="col">Events Attended</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let student of students">
+        <th scope="row">{{student.id}}</th>
+        <td>{{student.name}}</td>
+        <td>{{student.gradeLevel}}</td>
+        <td>{{student.points}}</td>
+        <td>{{student.eventsAttended}}</td>
+      </tr>
+    </tbody>
+  </table>
